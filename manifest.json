@@ -2,7 +2,7 @@
   "name": "Furco Furniture – Inventory",
   "short_name": "Furco",
   "description": "Furco Wholesale Furniture – Real-time stock availability",
-  "start_url": "/furco-stok/furco-stok.html",
+  "start_url": "/furco-stok/",
   "scope": "/furco-stok/",
   "display": "standalone",
   "background_color": "#0D0D0D",
