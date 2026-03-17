@@ -3,12 +3,12 @@ import type { ReactNode } from 'react'
 type Variant = 'green' | 'yellow' | 'red' | 'gray' | 'blue' | 'gold'
 
 const VARIANTS: Record<Variant, string> = {
-  green:  'bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20',
-  yellow: 'bg-amber-500/10  text-amber-400  ring-1 ring-amber-500/20',
-  red:    'bg-red-500/10    text-red-400    ring-1 ring-red-500/20',
-  gray:   'bg-white/5       text-white/40   ring-1 ring-white/8',
-  blue:   'bg-blue-500/10   text-blue-400   ring-1 ring-blue-500/20',
-  gold:   'bg-amber-500/10  text-amber-300  ring-1 ring-amber-400/25',
+  green:  'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200',
+  yellow: 'bg-amber-50   text-amber-700   ring-1 ring-amber-200',
+  red:    'bg-red-50     text-red-600     ring-1 ring-red-200',
+  gray:   'bg-slate-100  text-slate-500   ring-1 ring-slate-200',
+  blue:   'bg-blue-50    text-blue-700    ring-1 ring-blue-200',
+  gold:   'bg-amber-50   text-amber-700   ring-1 ring-amber-300',
 }
 
 export function Badge({ variant = 'gray', children, className = '' }: {

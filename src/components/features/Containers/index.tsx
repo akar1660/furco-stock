@@ -9,14 +9,14 @@ import { ContainerFormModal } from './ContainerFormModal'
 import type { Container } from '../../../types'
 
 function getEtaStatus(arrivalDate: string) {
-  if (!arrivalDate) return { days: null, label: '—', color: 'text-white/30' }
+  if (!arrivalDate) return { days: null, label: '—', color: 'text-slate-400' }
   const eta = new Date(arrivalDate)
   const today = new Date(); today.setHours(0,0,0,0)
   const days = Math.ceil((eta.getTime() - today.getTime()) / (1000*60*60*24))
-  if (days < 0) return { days, label: `${Math.abs(days)}d overdue`, color: 'text-red-400' }
-  if (days === 0) return { days, label: 'Today', color: 'text-amber-400' }
-  if (days <= 7)  return { days, label: `${days}d left`, color: 'text-amber-400' }
-  return { days, label: `${days}d left`, color: 'text-emerald-400' }
+  if (days < 0) return { days, label: `${Math.abs(days)}d overdue`, color: 'text-red-500' }
+  if (days === 0) return { days, label: 'Today', color: 'text-amber-600' }
+  if (days <= 7)  return { days, label: `${days}d left`, color: 'text-amber-600' }
+  return { days, label: `${days}d left`, color: 'text-emerald-600' }
 }
 
 export function Containers() {
@@ -59,10 +59,10 @@ export function Containers() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8 gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white" style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
+          <h1 className="text-2xl font-bold text-slate-900" style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
             Incoming Containers
           </h1>
-          <p className="text-xs text-white/35 mt-1">{pending.length} pending · {arrived.length} received</p>
+          <p className="text-xs text-slate-500 mt-1">{pending.length} pending · {arrived.length} received</p>
         </div>
         {isAdmin && (
           <Button variant="primary" size="md" icon={<Plus size={14} />} onClick={() => { setEditCont(null); setFormOpen(true) }}>
@@ -73,9 +73,9 @@ export function Containers() {
 
       {/* Pending containers */}
       {pending.length === 0 ? (
-        <div className="bg-white/3 border border-white/8 rounded-2xl py-16 text-center">
-          <Ship size={32} className="mx-auto mb-3 text-white/20" />
-          <p className="text-white/30 text-sm">No pending containers</p>
+        <div className="bg-white border border-slate-200 rounded-2xl py-16 text-center shadow-sm">
+          <Ship size={32} className="mx-auto mb-3 text-slate-300" />
+          <p className="text-slate-400 text-sm">No pending containers</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mb-8">
@@ -84,16 +84,16 @@ export function Containers() {
             const totalPcs = items.reduce((s, i) => s + i.qty, 0)
             const eta = getEtaStatus(c.arrivalDate)
             return (
-              <div key={c.id} className="bg-white/3 border border-white/8 rounded-2xl p-5 hover:border-white/15 transition-all group">
+              <div key={c.id} className="bg-white border border-slate-200 rounded-2xl p-5 hover:shadow-md hover:border-slate-300 transition-all group">
                 {/* Top accent */}
-                <div className="h-px bg-gradient-to-r from-amber-500/60 to-transparent mb-4 rounded" />
+                <div className="h-1 bg-gradient-to-r from-amber-400 to-amber-200 mb-4 rounded-full" />
 
                 {/* Number + ETA */}
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <div className="flex items-center gap-2 mb-0.5">
-                      <Ship size={14} className="text-amber-400/60" />
-                      <span className="text-sm font-bold text-white/85" style={{ fontFamily: 'monospace' }}>{c.number}</span>
+                      <Ship size={14} className="text-amber-500" />
+                      <span className="text-sm font-bold text-slate-800" style={{ fontFamily: 'monospace' }}>{c.number}</span>
                     </div>
                     <div className={`text-xs font-semibold ${eta.color}`}>
                       {eta.days !== null && (
@@ -110,13 +110,13 @@ export function Containers() {
 
                 {/* Dates */}
                 <div className="grid grid-cols-2 gap-2 mb-4">
-                  <div className="bg-white/3 rounded-xl p-3 text-center">
-                    <div className="text-xs text-white/25 uppercase tracking-widest mb-1">Loading</div>
-                    <div className="text-xs font-semibold text-white/70">{formatDate(c.loadingDate)}</div>
+                  <div className="bg-slate-50 rounded-xl p-3 text-center border border-slate-100">
+                    <div className="text-xs text-slate-400 uppercase tracking-widest mb-1">Loading</div>
+                    <div className="text-xs font-semibold text-slate-700">{formatDate(c.loadingDate)}</div>
                   </div>
-                  <div className="bg-white/3 rounded-xl p-3 text-center">
-                    <div className="text-xs text-white/25 uppercase tracking-widest mb-1">ETA</div>
-                    <div className="text-xs font-semibold text-white/70">{formatDate(c.arrivalDate)}</div>
+                  <div className="bg-slate-50 rounded-xl p-3 text-center border border-slate-100">
+                    <div className="text-xs text-slate-400 uppercase tracking-widest mb-1">ETA</div>
+                    <div className="text-xs font-semibold text-slate-700">{formatDate(c.arrivalDate)}</div>
                   </div>
                 </div>
 
@@ -124,26 +124,26 @@ export function Containers() {
                 <div className="max-h-24 overflow-y-auto mb-4 space-y-1">
                   {items.length ? items.map(i => (
                     <div key={i.id} className="flex justify-between text-xs">
-                      <span className="text-white/45 truncate">{i.name}</span>
-                      <span className="text-amber-400/70 font-semibold shrink-0 ml-2">+{i.qty}</span>
+                      <span className="text-slate-500 truncate">{i.name}</span>
+                      <span className="text-amber-600 font-semibold shrink-0 ml-2">+{i.qty}</span>
                     </div>
-                  )) : <p className="text-xs text-white/20">No items listed</p>}
+                  )) : <p className="text-xs text-slate-400">No items listed</p>}
                 </div>
 
                 {/* Footer */}
-                <div className="flex items-center gap-2 pt-3 border-t border-white/6">
+                <div className="flex items-center gap-2 pt-3 border-t border-slate-100">
                   <Badge variant="blue">{totalPcs} pcs · {items.length} types</Badge>
                   {isAdmin && (
                     <>
                       <button
                         onClick={() => setArriveTarget(c)}
-                        className="ml-auto px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500 hover:text-white transition-all"
+                        className="ml-auto px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-500 hover:text-white transition-all"
                       >
                         ✓ Arrived
                       </button>
                       <button
                         onClick={() => { setEditCont(c); setFormOpen(true) }}
-                        className="w-7 h-7 flex items-center justify-center rounded-lg bg-white/5 text-white/30 hover:bg-amber-500/10 hover:text-amber-400 transition-all"
+                        className="w-7 h-7 flex items-center justify-center rounded-lg bg-slate-100 text-slate-500 hover:bg-amber-50 hover:text-amber-700 transition-all"
                       >
                         <Pencil size={12} />
                       </button>
@@ -160,30 +160,30 @@ export function Containers() {
       {arrived.length > 0 && (
         <div>
           <div className="flex items-center gap-2 mb-4">
-            <CheckCircle2 size={16} className="text-emerald-400" />
-            <h2 className="text-sm font-semibold text-white/50 uppercase tracking-widest">Received Containers</h2>
+            <CheckCircle2 size={16} className="text-emerald-600" />
+            <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-widest">Received Containers</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {arrived.map(c => {
               const items = getContItems(products, c.number)
               return (
-                <div key={c.id} className="bg-emerald-500/4 border border-emerald-500/12 rounded-2xl p-5">
-                  <div className="h-px bg-gradient-to-r from-emerald-500/50 to-transparent mb-4 rounded" />
+                <div key={c.id} className="bg-emerald-50 border border-emerald-200 rounded-2xl p-5">
+                  <div className="h-1 bg-gradient-to-r from-emerald-400 to-emerald-200 mb-4 rounded-full" />
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm font-bold text-white/70" style={{ fontFamily: 'monospace' }}>{c.number}</span>
+                    <span className="text-sm font-bold text-slate-700" style={{ fontFamily: 'monospace' }}>{c.number}</span>
                     <Badge variant="green">Received</Badge>
                   </div>
                   <div className="grid grid-cols-2 gap-2 mb-3">
-                    <div className="bg-white/3 rounded-xl p-2.5 text-center">
-                      <div className="text-xs text-white/20 uppercase tracking-widest mb-0.5">Loading</div>
-                      <div className="text-xs font-semibold text-white/50">{formatDate(c.loadingDate)}</div>
+                    <div className="bg-white rounded-xl p-2.5 text-center border border-emerald-100">
+                      <div className="text-xs text-slate-400 uppercase tracking-widest mb-0.5">Loading</div>
+                      <div className="text-xs font-semibold text-slate-600">{formatDate(c.loadingDate)}</div>
                     </div>
-                    <div className="bg-white/3 rounded-xl p-2.5 text-center">
-                      <div className="text-xs text-white/20 uppercase tracking-widest mb-0.5">Arrived</div>
-                      <div className="text-xs font-semibold text-white/50">{formatDate(c.arrivalDate)}</div>
+                    <div className="bg-white rounded-xl p-2.5 text-center border border-emerald-100">
+                      <div className="text-xs text-slate-400 uppercase tracking-widest mb-0.5">Arrived</div>
+                      <div className="text-xs font-semibold text-slate-600">{formatDate(c.arrivalDate)}</div>
                     </div>
                   </div>
-                  <div className="text-xs text-white/25">{items.slice(0,3).map(i => i.name).join(', ')}{items.length > 3 ? ` +${items.length-3} more` : ''}</div>
+                  <div className="text-xs text-slate-500">{items.slice(0,3).map(i => i.name).join(', ')}{items.length > 3 ? ` +${items.length-3} more` : ''}</div>
                 </div>
               )
             })}
@@ -197,29 +197,29 @@ export function Containers() {
           const items = getContItems(products, arriveTarget.number)
           return (
             <>
-              <p className="text-sm text-white/50 mb-4">Container <strong className="text-white">{arriveTarget.number}</strong></p>
-              <div className="bg-white/3 rounded-xl p-4 mb-4 max-h-48 overflow-y-auto">
-                <div className="text-xs font-semibold text-white/30 uppercase tracking-widest mb-3">Products arriving:</div>
+              <p className="text-sm text-slate-500 mb-4">Container <strong className="text-slate-900">{arriveTarget.number}</strong></p>
+              <div className="bg-slate-50 rounded-xl p-4 mb-4 max-h-48 overflow-y-auto border border-slate-100">
+                <div className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">Products arriving:</div>
                 {items.map(i => (
-                  <div key={i.id} className="flex justify-between text-sm py-1 border-b border-white/5 last:border-0">
-                    <span className="text-white/60">{i.name}</span>
-                    <span className="text-emerald-400 font-semibold">+{i.qty}</span>
+                  <div key={i.id} className="flex justify-between text-sm py-1 border-b border-slate-100 last:border-0">
+                    <span className="text-slate-600">{i.name}</span>
+                    <span className="text-emerald-700 font-semibold">+{i.qty}</span>
                   </div>
                 ))}
-                {items.length === 0 && <p className="text-sm text-white/25">No products listed</p>}
+                {items.length === 0 && <p className="text-sm text-slate-400">No products listed</p>}
               </div>
-              <p className="text-xs text-white/35 mb-5">All products will have their stock automatically updated.</p>
+              <p className="text-xs text-slate-500 mb-5">All products will have their stock automatically updated.</p>
               <div className="flex gap-3">
                 <button
                   onClick={confirmArrive}
                   disabled={confirming}
-                  className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-emerald-500 hover:bg-emerald-400 text-white transition-all disabled:opacity-50"
+                  className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-emerald-500 hover:bg-emerald-600 text-white transition-all disabled:opacity-50"
                 >
                   {confirming ? 'Processing...' : '✓ Confirm & Update Stock'}
                 </button>
                 <button
                   onClick={() => setArriveTarget(null)}
-                  className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-white/5 hover:bg-white/10 text-white/50 hover:text-white transition-all"
+                  className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 transition-all"
                 >
                   Cancel
                 </button>

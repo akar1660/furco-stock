@@ -24,7 +24,6 @@ export function ContainerFormModal({ open, container, onClose }: {
       setNum(container.number)
       setLoad(container.loadingDate)
       setEta(container.arrivalDate)
-      // Load existing items
       const existing = products
         .filter(p => (p.containerQtys || {})[container.number] > 0)
         .map(p => ({ prodId: p.id, qty: p.containerQtys[container.number] }))
@@ -53,15 +52,12 @@ export function ContainerFormModal({ open, container, onClose }: {
     if (!num.trim()) { showToast('Container number required', 'warn'); return }
     setSaving(true)
     try {
-      // Update products' containerQtys
       const newContNumber = num.trim()
       const oldNumber = container?.number
 
       const updatedProducts = products.map(p => {
         const newQtys = { ...p.containerQtys }
-        // Remove old reference
         if (oldNumber && oldNumber !== newContNumber) delete newQtys[oldNumber]
-        // Remove new container reference first (will re-add if in items)
         delete newQtys[newContNumber]
         const item = items.find(i => i.prodId === p.id)
         if (item) newQtys[newContNumber] = item.qty
@@ -89,45 +85,48 @@ export function ContainerFormModal({ open, container, onClose }: {
     }
   }
 
+  const inputClass = 'w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition-all'
+  const labelClass = 'text-xs font-semibold text-slate-500 uppercase tracking-widest block mb-1.5'
+
   return (
     <Modal open={open} onClose={onClose} title={container ? 'Edit Container' : 'Add Container'} width="max-w-lg">
       <div className="space-y-4 mb-5">
         <div>
-          <label className="text-xs font-semibold text-white/35 uppercase tracking-widest block mb-1.5">Container Number *</label>
+          <label className={labelClass}>Container Number *</label>
           <input
             value={num}
             onChange={e => setNum(e.target.value)}
             placeholder="e.g. MRSU 1234567"
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-white/25 outline-none focus:border-amber-500/50 focus:ring-2 focus:ring-amber-500/10 font-mono"
+            className={`${inputClass} font-mono`}
           />
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="text-xs font-semibold text-white/35 uppercase tracking-widest block mb-1.5">Loading Date</label>
+            <label className={labelClass}>Loading Date</label>
             <input type="date" value={load} onChange={e => setLoad(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white outline-none focus:border-amber-500/50 [color-scheme:dark]" />
+              className={inputClass} />
           </div>
           <div>
-            <label className="text-xs font-semibold text-white/35 uppercase tracking-widest block mb-1.5">ETA</label>
+            <label className={labelClass}>ETA</label>
             <input type="date" value={eta} onChange={e => setEta(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white outline-none focus:border-amber-500/50 [color-scheme:dark]" />
+              className={inputClass} />
           </div>
         </div>
       </div>
 
       {/* Items */}
-      <div className="bg-white/3 rounded-xl p-4 mb-5">
-        <div className="text-xs font-semibold text-white/35 uppercase tracking-widest mb-3">Container Contents</div>
+      <div className="bg-slate-50 rounded-xl p-4 mb-5 border border-slate-100">
+        <div className={labelClass}>Container Contents</div>
         {items.length > 0 && (
           <div className="space-y-1.5 mb-3">
             {items.map(item => {
               const p = products.find(x => x.id === item.prodId)
               return p ? (
-                <div key={item.prodId} className="flex items-center justify-between text-sm bg-white/3 rounded-lg px-3 py-2">
-                  <span className="text-white/70 truncate">{p.name}</span>
+                <div key={item.prodId} className="flex items-center justify-between text-sm bg-white rounded-lg px-3 py-2 border border-slate-100">
+                  <span className="text-slate-700 truncate">{p.name}</span>
                   <div className="flex items-center gap-2 shrink-0 ml-2">
-                    <span className="text-amber-400 font-semibold">+{item.qty}</span>
-                    <button onClick={() => removeItem(item.prodId)} className="w-5 h-5 flex items-center justify-center rounded bg-white/5 hover:bg-red-500/20 text-white/30 hover:text-red-400 transition-all">
+                    <span className="text-amber-600 font-semibold">+{item.qty}</span>
+                    <button onClick={() => removeItem(item.prodId)} className="w-5 h-5 flex items-center justify-center rounded bg-slate-100 hover:bg-red-50 text-slate-400 hover:text-red-500 transition-all">
                       <X size={10} />
                     </button>
                   </div>
@@ -140,7 +139,7 @@ export function ContainerFormModal({ open, container, onClose }: {
           <select
             value={selProd}
             onChange={e => setSel(e.target.value)}
-            className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white [&>option]:bg-zinc-900 outline-none focus:border-amber-500/50 cursor-pointer"
+            className="flex-1 bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 [&>option]:bg-white outline-none focus:border-amber-400 cursor-pointer"
           >
             <option value="">Select product</option>
             {products.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
@@ -151,11 +150,11 @@ export function ContainerFormModal({ open, container, onClose }: {
             value={selQty}
             onChange={e => setSelQ(e.target.value)}
             placeholder="Qty"
-            className="w-20 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-white/25 outline-none focus:border-amber-500/50"
+            className="w-20 bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-amber-400"
           />
           <button
             onClick={addItem}
-            className="px-3 py-2 rounded-lg bg-white text-black text-sm font-semibold hover:bg-amber-400 transition-all"
+            className="px-3 py-2 rounded-lg bg-slate-900 text-white text-sm font-semibold hover:bg-amber-600 transition-all"
           >
             + Add
           </button>
@@ -166,13 +165,13 @@ export function ContainerFormModal({ open, container, onClose }: {
         <button
           onClick={save}
           disabled={saving}
-          className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-white hover:bg-amber-400 text-black transition-all disabled:opacity-50"
+          className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-slate-900 hover:bg-amber-600 text-white transition-all disabled:opacity-50"
         >
           {saving ? 'Saving...' : container ? 'Save Changes' : 'Add Container'}
         </button>
         <button
           onClick={onClose}
-          className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-white/5 hover:bg-white/10 text-white/50 hover:text-white transition-all"
+          className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 transition-all"
         >
           Cancel
         </button>

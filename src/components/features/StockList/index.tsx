@@ -90,11 +90,11 @@ export function StockList() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6 gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white" style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
+          <h1 className="text-2xl font-bold text-slate-900" style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
             {isAdmin ? 'Stock List' : 'Product Catalogue'}
           </h1>
           {!isAdmin && (
-            <p className="text-xs text-white/35 mt-1">
+            <p className="text-xs text-slate-500 mt-1">
               Real-time availability · Toronto, Ontario · Canada
             </p>
           )}
@@ -120,8 +120,8 @@ export function StockList() {
               onClick={() => setPill(c)}
               className={`shrink-0 px-4 py-2 rounded-full text-xs font-semibold transition-all border ${
                 activePill === c
-                  ? 'bg-white text-black border-white'
-                  : 'bg-white/5 text-white/50 border-white/10 hover:bg-white/10 hover:text-white'
+                  ? 'bg-slate-900 text-white border-slate-900'
+                  : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50 hover:border-slate-300'
               }`}
             >
               {c || 'All Products'}
@@ -131,7 +131,7 @@ export function StockList() {
       )}
 
       {/* Filters */}
-      <div className={`mb-4 ${isAdmin ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 p-4 bg-white/3 border border-white/8 rounded-2xl' : ''}`}>
+      <div className={`mb-4 ${isAdmin ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 p-4 bg-white border border-slate-200 rounded-2xl shadow-sm' : ''}`}>
         <SearchInput
           value={search}
           onChange={setSearch}
@@ -160,15 +160,15 @@ export function StockList() {
       </div>
 
       {/* Table */}
-      <div className="bg-white/3 border border-white/8 rounded-2xl overflow-hidden">
+      <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
         {/* Table header */}
         {isAdmin ? (
-          <div className="px-4 py-3 border-b border-white/8 flex items-center gap-2">
-            <Package size={13} className="text-white/30" />
-            <span className="text-xs text-white/30 font-semibold uppercase tracking-widest">{list.length} products</span>
+          <div className="px-4 py-3 border-b border-slate-100 flex items-center gap-2 bg-slate-50">
+            <Package size={13} className="text-slate-400" />
+            <span className="text-xs text-slate-500 font-semibold uppercase tracking-widest">{list.length} products</span>
           </div>
         ) : (
-          <div className="grid grid-cols-[1fr_120px] px-4 py-3 border-b border-white/8 text-xs font-semibold text-white/30 uppercase tracking-widest">
+          <div className="grid grid-cols-[1fr_120px] px-4 py-3 border-b border-slate-100 text-xs font-semibold text-slate-500 uppercase tracking-widest bg-slate-50">
             <span>Product</span>
             <span className="text-right">Availability</span>
           </div>
@@ -176,25 +176,25 @@ export function StockList() {
 
         {/* Rows */}
         {list.length === 0 ? (
-          <div className="py-16 text-center text-white/25 text-sm">
+          <div className="py-16 text-center text-slate-400 text-sm">
             <Package size={32} className="mx-auto mb-3 opacity-30" />
             No products found
           </div>
         ) : isAdmin ? (
-          <div className="divide-y divide-white/5">
+          <div className="divide-y divide-slate-50">
             {list.map(p => {
               const ib = inbound(p)
               return (
-                <div key={p.id} className="px-4 py-3.5 hover:bg-white/2 transition-colors">
+                <div key={p.id} className="px-4 py-3.5 hover:bg-slate-50 transition-colors">
                   <div className="flex items-start justify-between gap-3 mb-2">
                     <div className="min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-sm font-semibold text-white/90">{p.name}</span>
+                        <span className="text-sm font-semibold text-slate-900">{p.name}</span>
                         {p.hidden && <Badge variant="yellow">Hidden</Badge>}
                       </div>
-                      <div className="text-xs text-white/30 mt-0.5">{p.sku} · <span className="text-white/40">{p.category}</span></div>
+                      <div className="text-xs text-slate-400 mt-0.5">{p.sku} · <span className="text-slate-500">{p.category}</span></div>
                       {ib > 0 && (
-                        <div className="text-xs text-blue-400/80 mt-1">📦 {ib} inbound</div>
+                        <div className="text-xs text-blue-600 font-medium mt-1">📦 {ib} inbound</div>
                       )}
                     </div>
                     <StockQtyBadge qty={p.qty} minQty={p.minQty} />
@@ -202,32 +202,32 @@ export function StockList() {
                   <div className="flex items-center gap-2 flex-wrap">
                     <button
                       onClick={() => openOut(p)}
-                      className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500/8 text-amber-400 border border-amber-500/15 hover:bg-amber-500/15 transition-all"
+                      className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-100 transition-all"
                     >
                       − Out
                     </button>
                     <button
                       onClick={() => openAdj(p)}
-                      className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-500/8 text-blue-400 border border-blue-500/15 hover:bg-blue-500/15 transition-all"
+                      className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 transition-all"
                     >
                       ± Stock
                     </button>
                     <button
                       onClick={() => toggleHidden(p.id)}
-                      className="w-7 h-7 flex items-center justify-center rounded-lg bg-white/5 text-white/30 hover:bg-white/10 hover:text-white transition-all"
+                      className="w-7 h-7 flex items-center justify-center rounded-lg bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-900 transition-all"
                       title={p.hidden ? 'Show to customers' : 'Hide from customers'}
                     >
                       {p.hidden ? <EyeOff size={13} /> : <Eye size={13} />}
                     </button>
                     <button
                       onClick={() => openEdit(p)}
-                      className="w-7 h-7 flex items-center justify-center rounded-lg bg-white/5 text-white/30 hover:bg-amber-500/10 hover:text-amber-400 transition-all"
+                      className="w-7 h-7 flex items-center justify-center rounded-lg bg-slate-100 text-slate-500 hover:bg-amber-50 hover:text-amber-700 transition-all"
                     >
                       <Pencil size={13} />
                     </button>
                     <button
                       onClick={() => setDelTarget(p)}
-                      className="w-7 h-7 flex items-center justify-center rounded-lg bg-red-500/5 text-red-400/40 hover:bg-red-500/10 hover:text-red-400 transition-all"
+                      className="w-7 h-7 flex items-center justify-center rounded-lg bg-red-50 text-red-400 hover:bg-red-100 hover:text-red-600 transition-all"
                     >
                       <Trash2 size={13} />
                     </button>
@@ -237,15 +237,15 @@ export function StockList() {
             })}
           </div>
         ) : (
-          <div className="divide-y divide-white/5">
+          <div className="divide-y divide-slate-50">
             {list.map(p => {
               const ib = inbound(p)
               return (
-                <div key={p.id} className="grid grid-cols-[1fr_120px] items-center px-4 py-3.5 hover:bg-white/2 transition-colors">
+                <div key={p.id} className="grid grid-cols-[1fr_120px] items-center px-4 py-3.5 hover:bg-slate-50 transition-colors">
                   <div>
-                    <div className="text-sm font-semibold text-white/85">{p.name}</div>
-                    <div className="text-xs text-white/30 mt-0.5">{p.category}</div>
-                    {ib > 0 && <div className="text-xs text-blue-400/70 mt-1">📦 {ib} inbound</div>}
+                    <div className="text-sm font-semibold text-slate-800">{p.name}</div>
+                    <div className="text-xs text-slate-400 mt-0.5">{p.category}</div>
+                    {ib > 0 && <div className="text-xs text-blue-600 font-medium mt-1">📦 {ib} inbound</div>}
                   </div>
                   <div className="flex justify-end">
                     <StockBadge qty={p.qty} minQty={p.minQty} />
@@ -257,7 +257,7 @@ export function StockList() {
         )}
       </div>
 
-      <div className="mt-3 text-xs text-white/20 text-right font-medium">{list.length} products shown</div>
+      <div className="mt-3 text-xs text-slate-400 text-right font-medium">{list.length} products shown</div>
 
       {/* Modals */}
       {adjProduct && (
@@ -279,7 +279,7 @@ export function StockList() {
         onClose={() => setDelTarget(null)}
         onConfirm={() => deleteTarget && deleteProduct(deleteTarget)}
         title="Delete Product"
-        message={deleteTarget ? <><strong className="text-white">"{deleteTarget.name}"</strong> will be permanently removed.</> : ''}
+        message={deleteTarget ? <><strong className="text-slate-900">"{deleteTarget.name}"</strong> will be permanently removed.</> : ''}
         danger
       />
     </div>
