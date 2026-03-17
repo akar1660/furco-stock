@@ -1,4 +1,5 @@
 import { LayoutDashboard, Package, Ship, History, LogOut, LogIn } from 'lucide-react'
+import type React from 'react'
 import { useStore } from '../../store/useStore'
 import type { Page } from '../../types'
 
@@ -100,8 +101,9 @@ export function Sidebar() {
 
   /* ── Mobile bottom tab bar ── */
   const MobileBottomNav = () => {
-    const allTabs = isAdmin
-      ? [...ADMIN_NAV, { id: 'logout' as Page, label: 'Logout', icon: LogOut }]
+    type NavTab = { id: Page | 'logout'; label: string; icon: React.ElementType }
+    const allTabs: NavTab[] = isAdmin
+      ? [...ADMIN_NAV, { id: 'logout' as const, label: 'Logout', icon: LogOut }]
       : [...PUBLIC_NAV, { id: 'login' as Page, label: 'Login', icon: LogIn }]
 
     return (
