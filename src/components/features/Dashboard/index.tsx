@@ -2,7 +2,7 @@ import { useStore } from '../../../store/useStore'
 import { CATEGORIES, getContItems } from '../../../lib/constants'
 import { Badge } from '../../ui/Badge'
 import { Button } from '../../ui/Button'
-import { Download, Package, CheckCircle2, AlertTriangle, XCircle, Ship } from 'lucide-react'
+import { Download, Package, CheckCircle2, AlertTriangle, XCircle, Ship, TrendingUp } from 'lucide-react'
 import type { Product, Container } from '../../../types'
 
 function exportQB(products: Product[]) {
@@ -17,23 +17,23 @@ function exportQB(products: Product[]) {
 }
 
 const STAT_ITEMS = (p: Product[], c: Container[]) => {
-  const instock = p.filter(x => x.qty > x.minQty).length
-  const low     = p.filter(x => x.qty > 0 && x.qty <= x.minQty).length
-  const none    = p.filter(x => x.qty === 0).length
+  const instock  = p.filter(x => x.qty > x.minQty).length
+  const low      = p.filter(x => x.qty > 0 && x.qty <= x.minQty).length
+  const none     = p.filter(x => x.qty === 0).length
   const totalQty = p.reduce((s, x) => s + x.qty, 0)
   const pending  = c.filter(x => !x.arrived).length
   return [
-    { label: 'Total SKUs',    value: p.length,                  icon: Package,       color: 'text-white/80',   bg: 'bg-white/5' },
-    { label: 'Units on Hand', value: totalQty.toLocaleString(), icon: Package,       color: 'text-amber-300',  bg: 'bg-amber-500/8' },
-    { label: 'In Stock',      value: instock,                   icon: CheckCircle2,  color: 'text-emerald-400',bg: 'bg-emerald-500/8' },
-    { label: 'Low Stock',     value: low,                       icon: AlertTriangle, color: 'text-amber-400',  bg: 'bg-amber-500/8' },
-    { label: 'Out of Stock',  value: none,                      icon: XCircle,       color: 'text-red-400',    bg: 'bg-red-500/8' },
-    { label: 'Pending Containers', value: pending,              icon: Ship,          color: 'text-blue-400',   bg: 'bg-blue-500/8' },
+    { label: 'Total SKUs',         value: p.length,                  icon: Package,       color: 'text-slate-700',    bg: 'bg-slate-50',    border: 'border-slate-200',   iconBg: 'bg-slate-100' },
+    { label: 'Units on Hand',      value: totalQty.toLocaleString(), icon: TrendingUp,    color: 'text-amber-700',    bg: 'bg-amber-50',    border: 'border-amber-200',   iconBg: 'bg-amber-100' },
+    { label: 'In Stock',           value: instock,                   icon: CheckCircle2,  color: 'text-emerald-700',  bg: 'bg-emerald-50',  border: 'border-emerald-200', iconBg: 'bg-emerald-100' },
+    { label: 'Low Stock',          value: low,                       icon: AlertTriangle, color: 'text-amber-700',    bg: 'bg-amber-50',    border: 'border-amber-200',   iconBg: 'bg-amber-100' },
+    { label: 'Out of Stock',       value: none,                      icon: XCircle,       color: 'text-red-600',      bg: 'bg-red-50',      border: 'border-red-200',     iconBg: 'bg-red-100' },
+    { label: 'Pending Containers', value: pending,                   icon: Ship,          color: 'text-blue-700',     bg: 'bg-blue-50',     border: 'border-blue-200',    iconBg: 'bg-blue-100' },
   ]
 }
 
 const CAT_COLORS = [
-  '#C8870A', '#3B82F6', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899',
+  '#D97706', '#3B82F6', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899',
 ]
 
 export function Dashboard() {
@@ -75,10 +75,10 @@ export function Dashboard() {
       {/* Page header */}
       <div className="flex items-start justify-between mb-8 gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1" style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
+          <h1 className="text-2xl font-bold text-slate-900 mb-1" style={{ fontFamily: 'Playfair Display, Georgia, serif' }}>
             Stock Overview
           </h1>
-          <p className="text-sm text-white/40">{dateStr}</p>
+          <p className="text-sm text-slate-500">{dateStr}</p>
         </div>
         <Button variant="outline" size="md" icon={<Download size={14} />} onClick={handleExport}>
           Export CSV
@@ -88,14 +88,14 @@ export function Dashboard() {
       {/* KPI Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-3 mb-8">
         {stats.map((s, i) => (
-          <div key={i} className={`${s.bg} border border-white/8 rounded-2xl p-4 hover:border-white/15 transition-all`}>
-            <div className="flex items-center gap-2 mb-3">
-              <s.icon size={14} className={s.color} />
-              <span className="text-xs text-white/35 font-medium">{s.label}</span>
+          <div key={i} className={`${s.bg} border ${s.border} rounded-2xl p-4 hover:shadow-md transition-all`}>
+            <div className={`w-8 h-8 rounded-xl ${s.iconBg} flex items-center justify-center mb-3`}>
+              <s.icon size={15} className={s.color} />
             </div>
-            <div className={`text-2xl font-bold ${s.color}`} style={{ fontFamily: 'Playfair Display, serif' }}>
+            <div className={`text-2xl font-bold ${s.color} mb-1`} style={{ fontFamily: 'Playfair Display, serif' }}>
               {s.value}
             </div>
+            <div className="text-xs text-slate-500 font-medium">{s.label}</div>
           </div>
         ))}
       </div>
@@ -103,20 +103,20 @@ export function Dashboard() {
       {/* Two col */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         {/* Category bars */}
-        <div className="bg-white/3 border border-white/8 rounded-2xl p-6">
-          <div className="text-xs font-semibold text-white/35 uppercase tracking-widest mb-5">Inventory by Category</div>
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+          <div className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-5">Inventory by Category</div>
           <div className="space-y-4">
             {catTotals.filter(c => c.count > 0).map((c, i) => (
               <div key={c.cat}>
                 <div className="flex justify-between items-center mb-1.5">
-                  <span className="text-sm font-medium text-white/70">{c.cat}</span>
+                  <span className="text-sm font-medium text-slate-700">{c.cat}</span>
                   <div className="flex items-center gap-2">
-                    {c.oos > 0 && <span className="text-xs bg-red-500/10 text-red-400 px-1.5 py-0.5 rounded font-semibold">{c.oos} OOS</span>}
-                    {c.lowC > 0 && <span className="text-xs bg-amber-500/10 text-amber-400 px-1.5 py-0.5 rounded font-semibold">{c.lowC} LOW</span>}
-                    <span className="text-xs text-white/30">{c.total} pcs</span>
+                    {c.oos > 0 && <span className="text-xs bg-red-50 text-red-600 px-1.5 py-0.5 rounded font-semibold ring-1 ring-red-200">{c.oos} OOS</span>}
+                    {c.lowC > 0 && <span className="text-xs bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded font-semibold ring-1 ring-amber-200">{c.lowC} LOW</span>}
+                    <span className="text-xs text-slate-400 font-medium">{c.total} pcs</span>
                   </div>
                 </div>
-                <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
+                <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-700"
                     style={{ width: `${(c.total / maxCat) * 100}%`, background: CAT_COLORS[i % CAT_COLORS.length] }}
@@ -128,49 +128,49 @@ export function Dashboard() {
         </div>
 
         {/* Stock health */}
-        <div className="bg-white/3 border border-white/8 rounded-2xl p-6">
-          <div className="text-xs font-semibold text-white/35 uppercase tracking-widest mb-5">Stock Health</div>
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+          <div className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-5">Stock Health</div>
 
           {/* Big % */}
           <div className="text-center mb-6">
             <div
-              className={`text-5xl font-bold mb-1 ${healthPct >= 70 ? 'text-emerald-400' : healthPct >= 40 ? 'text-amber-400' : 'text-red-400'}`}
+              className={`text-5xl font-bold mb-1 ${healthPct >= 70 ? 'text-emerald-600' : healthPct >= 40 ? 'text-amber-600' : 'text-red-500'}`}
               style={{ fontFamily: 'Playfair Display, serif' }}
             >
               {healthPct}%
             </div>
-            <div className="text-xs text-white/30 uppercase tracking-widest">Products in Stock</div>
+            <div className="text-xs text-slate-400 uppercase tracking-widest font-medium">Products in Stock</div>
           </div>
 
           {/* Stacked bar */}
-          <div className="h-2 rounded-full overflow-hidden flex mb-5">
+          <div className="h-2.5 rounded-full overflow-hidden flex mb-5 bg-slate-100">
             <div className="bg-emerald-500 transition-all duration-700" style={{ width: `${(instock/total)*100}%` }} />
             <div className="bg-amber-500 transition-all duration-700"  style={{ width: `${(low/total)*100}%` }} />
-            <div className="bg-red-500 transition-all duration-700"    style={{ width: `${(none/total)*100}%` }} />
+            <div className="bg-red-400 transition-all duration-700"    style={{ width: `${(none/total)*100}%` }} />
           </div>
 
           {/* Legend */}
           <div className="space-y-2.5">
             {[
-              { label: 'In Stock',     count: instock, color: 'bg-emerald-500', text: 'text-emerald-400' },
-              { label: 'Low Stock',    count: low,     color: 'bg-amber-500',   text: 'text-amber-400' },
-              { label: 'Out of Stock', count: none,    color: 'bg-red-500',     text: 'text-red-400' },
+              { label: 'In Stock',     count: instock, color: 'bg-emerald-500', text: 'text-emerald-700', bg: 'bg-emerald-50' },
+              { label: 'Low Stock',    count: low,     color: 'bg-amber-500',   text: 'text-amber-700',  bg: 'bg-amber-50' },
+              { label: 'Out of Stock', count: none,    color: 'bg-red-400',     text: 'text-red-600',    bg: 'bg-red-50' },
             ].map(row => (
               <div key={row.label} className="flex justify-between items-center">
                 <div className="flex items-center gap-2.5">
-                  <div className={`w-2 h-2 rounded-sm ${row.color}`} />
-                  <span className="text-sm text-white/50">{row.label}</span>
+                  <div className={`w-2.5 h-2.5 rounded-sm ${row.color}`} />
+                  <span className="text-sm text-slate-600">{row.label}</span>
                 </div>
-                <span className={`text-sm font-bold ${row.text}`}>{row.count}</span>
+                <span className={`text-sm font-bold px-2 py-0.5 rounded-lg ${row.bg} ${row.text}`}>{row.count}</span>
               </div>
             ))}
             {totalInbound > 0 && (
-              <div className="flex justify-between items-center pt-2 border-t border-white/8">
+              <div className="flex justify-between items-center pt-2 border-t border-slate-100">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-2 h-2 rounded-sm bg-blue-500" />
-                  <span className="text-sm text-white/50">Inbound (containers)</span>
+                  <div className="w-2.5 h-2.5 rounded-sm bg-blue-500" />
+                  <span className="text-sm text-slate-600">Inbound (containers)</span>
                 </div>
-                <span className="text-sm font-bold text-blue-400">+{totalInbound}</span>
+                <span className="text-sm font-bold px-2 py-0.5 rounded-lg bg-blue-50 text-blue-700">+{totalInbound}</span>
               </div>
             )}
           </div>
@@ -179,20 +179,22 @@ export function Dashboard() {
 
       {/* Critical stock table */}
       {criticalProducts.length > 0 && (
-        <div className="bg-white/3 border border-white/8 rounded-2xl overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-white/8">
+        <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
             <div className="flex items-center gap-2">
-              <AlertTriangle size={15} className="text-amber-400" />
-              <span className="text-sm font-semibold text-white/80">Critical Stock</span>
+              <div className="w-7 h-7 rounded-lg bg-amber-50 flex items-center justify-center">
+                <AlertTriangle size={14} className="text-amber-600" />
+              </div>
+              <span className="text-sm font-semibold text-slate-800">Critical Stock</span>
             </div>
             <Badge variant="yellow">{criticalProducts.length} products</Badge>
           </div>
-          <div className="divide-y divide-white/5">
+          <div className="divide-y divide-slate-50">
             {criticalProducts.slice(0, 10).map(p => (
-              <div key={p.id} className="flex items-center justify-between px-6 py-3 hover:bg-white/2 transition-colors">
+              <div key={p.id} className="flex items-center justify-between px-6 py-3.5 hover:bg-slate-50 transition-colors">
                 <div>
-                  <div className="text-sm font-medium text-white/80">{p.name}</div>
-                  <div className="text-xs text-white/30 mt-0.5">{p.category} · {p.sku}</div>
+                  <div className="text-sm font-semibold text-slate-800">{p.name}</div>
+                  <div className="text-xs text-slate-400 mt-0.5">{p.category} · {p.sku}</div>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="text-right">
@@ -200,7 +202,7 @@ export function Dashboard() {
                       ? <Badge variant="red">0 units</Badge>
                       : <Badge variant="yellow">{p.qty} units</Badge>
                     }
-                    <div className="text-xs text-white/20 mt-1">Min: {p.minQty}</div>
+                    <div className="text-xs text-slate-400 mt-1">Min: {p.minQty}</div>
                   </div>
                 </div>
               </div>

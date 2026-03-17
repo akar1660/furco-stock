@@ -40,11 +40,11 @@ export function Sidebar() {
         onClick={() => navigate(item.id)}
         className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 text-left group
           ${active
-            ? 'bg-amber-500/10 text-amber-300 ring-1 ring-amber-500/20'
-            : 'text-white/50 hover:text-white hover:bg-white/6'
+            ? 'bg-amber-50 text-amber-700 ring-1 ring-amber-200'
+            : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
           }`}
       >
-        <item.icon size={16} className={active ? 'text-amber-400' : 'text-white/30 group-hover:text-white/60'} />
+        <item.icon size={16} className={active ? 'text-amber-600' : 'text-slate-400 group-hover:text-slate-600'} />
         {item.label}
       </button>
     )
@@ -53,13 +53,13 @@ export function Sidebar() {
   const SidebarContent = () => (
     <div className="flex flex-col h-full">
       {/* Logo */}
-      <div className="px-4 py-5 border-b border-white/8">
+      <div className="px-4 py-5 border-b border-slate-100">
         <div className="flex items-center gap-3">
           <img src="/furco-logo.png" alt="Furco" className="h-8 w-auto" />
-          <div className="w-px h-5 bg-white/10" />
+          <div className="w-px h-5 bg-slate-200" />
           <div>
-            <div className="text-xs font-semibold text-white/40 uppercase tracking-widest leading-none">Wholesale</div>
-            <div className="text-xs text-amber-400/80 font-medium mt-0.5">Toronto, Canada</div>
+            <div className="text-xs font-semibold text-slate-400 uppercase tracking-widest leading-none">Wholesale</div>
+            <div className="text-xs text-amber-600 font-medium mt-0.5">Toronto, Canada</div>
           </div>
         </div>
       </div>
@@ -67,9 +67,9 @@ export function Sidebar() {
       {/* Admin badge */}
       {isAdmin && (
         <div className="px-4 pt-4">
-          <div className="flex items-center gap-2 px-3 py-2 bg-amber-500/8 rounded-xl ring-1 ring-amber-500/15">
-            <div className="w-1.5 h-1.5 rounded-full bg-amber-400 anim-pulse" />
-            <span className="text-xs font-semibold text-amber-300/80 uppercase tracking-widest">Admin Mode</span>
+          <div className="flex items-center gap-2 px-3 py-2 bg-amber-50 rounded-xl ring-1 ring-amber-200">
+            <div className="w-1.5 h-1.5 rounded-full bg-amber-500 anim-pulse" />
+            <span className="text-xs font-semibold text-amber-700 uppercase tracking-widest">Admin Mode</span>
           </div>
         </div>
       )}
@@ -80,26 +80,26 @@ export function Sidebar() {
       </nav>
 
       {/* Bottom */}
-      <div className="px-4 pb-5 border-t border-white/8 pt-4 space-y-1">
+      <div className="px-4 pb-5 border-t border-slate-100 pt-4 space-y-1">
         {isAdmin ? (
           <button
             onClick={logout}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-red-400/70 hover:text-red-300 hover:bg-red-500/8 transition-all group"
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:text-red-700 hover:bg-red-50 transition-all group"
           >
-            <LogOut size={16} className="text-red-400/40 group-hover:text-red-400" />
+            <LogOut size={16} className="text-red-400 group-hover:text-red-600" />
             Logout
           </button>
         ) : (
           <button
             onClick={() => { setPage('login'); setMobileOpen(false) }}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/40 hover:text-white hover:bg-white/6 transition-all group"
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-all group"
           >
-            <LogIn size={16} className="text-white/20 group-hover:text-white/60" />
+            <LogIn size={16} className="text-slate-400 group-hover:text-slate-600" />
             Admin Login
           </button>
         )}
         <div className="px-3 pt-2">
-          <div className="text-xs text-white/15 font-medium">Furco Inventory v2.0</div>
+          <div className="text-xs text-slate-300 font-medium">Furco Inventory v2.0</div>
         </div>
       </div>
     </div>
@@ -108,18 +108,18 @@ export function Sidebar() {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex flex-col w-60 shrink-0 bg-black/40 border-r border-white/8 min-h-screen sticky top-0 h-screen">
+      <aside className="hidden lg:flex flex-col w-60 shrink-0 bg-white border-r border-slate-200 min-h-screen sticky top-0 h-screen shadow-sm">
         <SidebarContent />
       </aside>
 
       {/* Mobile top bar */}
-      <div className="lg:hidden flex items-center justify-between px-4 h-14 bg-zinc-950 border-b border-white/8 sticky top-0 z-40">
+      <div className="lg:hidden flex items-center justify-between px-4 h-14 bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
         <img src="/furco-logo.png" alt="Furco" className="h-7 w-auto" />
         <div className="flex items-center gap-2">
-          {isAdmin && <span className="text-xs font-bold text-amber-400 bg-amber-400/10 px-2 py-1 rounded-full">ADMIN</span>}
+          {isAdmin && <span className="text-xs font-bold text-amber-700 bg-amber-50 px-2 py-1 rounded-full ring-1 ring-amber-200">ADMIN</span>}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="w-9 h-9 flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 text-white/60 transition-all"
+            className="w-9 h-9 flex items-center justify-center rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-all"
           >
             {mobileOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
@@ -128,8 +128,8 @@ export function Sidebar() {
 
       {/* Mobile drawer */}
       {mobileOpen && (
-        <div className="lg:hidden fixed inset-0 z-30 anim-over" style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }} onClick={() => setMobileOpen(false)}>
-          <div className="w-72 h-full bg-zinc-950 border-r border-white/10 anim-up" onClick={e => e.stopPropagation()}>
+        <div className="lg:hidden fixed inset-0 z-30 anim-over" style={{ background: 'rgba(15,23,42,0.4)', backdropFilter: 'blur(4px)' }} onClick={() => setMobileOpen(false)}>
+          <div className="w-72 h-full bg-white border-r border-slate-200 anim-up shadow-xl" onClick={e => e.stopPropagation()}>
             <div className="pt-14 h-full">
               <SidebarContent />
             </div>

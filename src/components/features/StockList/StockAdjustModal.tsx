@@ -35,14 +35,17 @@ export function StockAdjustModal({ product, mode, onClose }: {
     onClose()
   }
 
+  const inputClass = 'w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100'
+  const labelClass = 'text-xs font-semibold text-slate-500 uppercase tracking-widest block mb-1.5'
+
   return (
     <Modal
       open={true}
       onClose={onClose}
       title={isOut ? 'Quick Stock Out' : 'Adjust Stock'}
     >
-      <p className="text-sm text-white/40 mb-5">
-        {product.name} · Current: <span className="text-white font-semibold">{product.qty} units</span>
+      <p className="text-sm text-slate-500 mb-5">
+        {product.name} · Current: <span className="text-slate-900 font-semibold">{product.qty} units</span>
       </p>
 
       {!isOut && (
@@ -54,9 +57,9 @@ export function StockAdjustModal({ product, mode, onClose }: {
               className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all border ${
                 adjType === t
                   ? t === 'add'
-                    ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-                    : 'bg-red-500/10 text-red-400 border-red-500/30'
-                  : 'bg-white/3 text-white/30 border-white/8 hover:bg-white/6'
+                    ? 'bg-emerald-50 text-emerald-700 border-emerald-300'
+                    : 'bg-red-50 text-red-600 border-red-300'
+                  : 'bg-slate-50 text-slate-500 border-slate-200 hover:bg-slate-100'
               }`}
             >
               {t === 'add' ? '+ Add' : '− Remove'}
@@ -67,7 +70,7 @@ export function StockAdjustModal({ product, mode, onClose }: {
 
       <div className="space-y-3 mb-5">
         <div>
-          <label className="text-xs font-semibold text-white/35 uppercase tracking-widest block mb-1.5">
+          <label className={labelClass}>
             {isOut ? 'Units Out' : 'Quantity (units)'}
           </label>
           <input
@@ -76,19 +79,19 @@ export function StockAdjustModal({ product, mode, onClose }: {
             value={qty}
             onChange={e => setQty(e.target.value)}
             placeholder="e.g. 5"
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-white/25 outline-none focus:border-amber-500/50 focus:ring-2 focus:ring-amber-500/10"
+            className={inputClass}
             autoFocus
           />
         </div>
         {isOut && (
           <div>
-            <label className="text-xs font-semibold text-white/35 uppercase tracking-widest block mb-1.5">Note (optional)</label>
+            <label className={labelClass}>Note (optional)</label>
             <input
               type="text"
               value={note}
               onChange={e => setNote(e.target.value)}
               placeholder="Customer name, order #, etc."
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-white/25 outline-none focus:border-amber-500/50 focus:ring-2 focus:ring-amber-500/10"
+              className={inputClass}
             />
           </div>
         )}
@@ -99,17 +102,17 @@ export function StockAdjustModal({ product, mode, onClose }: {
           onClick={confirm}
           className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all ${
             isOut
-              ? 'bg-red-500 hover:bg-red-400 text-white'
+              ? 'bg-red-500 hover:bg-red-600 text-white'
               : adjType === 'add'
-              ? 'bg-emerald-500 hover:bg-emerald-400 text-white'
-              : 'bg-red-500 hover:bg-red-400 text-white'
+              ? 'bg-emerald-500 hover:bg-emerald-600 text-white'
+              : 'bg-red-500 hover:bg-red-600 text-white'
           }`}
         >
           {isOut ? 'Confirm Out' : adjType === 'add' ? '+ Confirm Add' : '− Confirm Remove'}
         </button>
         <button
           onClick={onClose}
-          className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-white/5 hover:bg-white/10 text-white/50 hover:text-white transition-all"
+          className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 transition-all"
         >
           Cancel
         </button>

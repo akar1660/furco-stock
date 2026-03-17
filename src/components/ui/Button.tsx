@@ -4,11 +4,11 @@ type Variant = 'primary' | 'ghost' | 'danger' | 'success' | 'outline'
 type Size = 'sm' | 'md' | 'lg'
 
 const VARIANTS: Record<Variant, string> = {
-  primary: 'bg-white text-black hover:bg-amber-400 hover:text-black active:scale-95',
-  ghost:   'bg-white/5 text-white/70 hover:bg-white/10 hover:text-white active:scale-95',
-  danger:  'bg-red-500/10 text-red-400 ring-1 ring-red-500/20 hover:bg-red-500 hover:text-white active:scale-95',
-  success: 'bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20 hover:bg-emerald-500 hover:text-white active:scale-95',
-  outline: 'bg-transparent text-white/60 ring-1 ring-white/12 hover:ring-amber-500/40 hover:text-amber-300 active:scale-95',
+  primary: 'bg-slate-900 text-white hover:bg-amber-600 active:scale-95',
+  ghost:   'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900 active:scale-95',
+  danger:  'bg-red-50 text-red-600 ring-1 ring-red-200 hover:bg-red-500 hover:text-white active:scale-95',
+  success: 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200 hover:bg-emerald-500 hover:text-white active:scale-95',
+  outline: 'bg-white text-slate-600 ring-1 ring-slate-200 hover:ring-amber-400 hover:text-amber-700 active:scale-95',
 }
 
 const SIZES: Record<Size, string> = {

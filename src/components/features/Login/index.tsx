@@ -38,14 +38,14 @@ export function Login() {
     <div className="flex items-center justify-center min-h-[70vh] anim-fade">
       <div className="w-full max-w-xs">
         {/* Card */}
-        <div className="bg-white/3 border border-white/8 rounded-3xl p-8 text-center">
+        <div className="bg-white border border-slate-200 rounded-3xl p-8 text-center shadow-lg">
           {/* Icon */}
-          <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/15 flex items-center justify-center mx-auto mb-6">
+          <div className="w-16 h-16 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center mx-auto mb-6">
             <span className="text-2xl">🔐</span>
           </div>
 
-          <h2 className="text-xl font-bold text-white mb-1" style={{ fontFamily: 'Playfair Display, serif' }}>Admin Login</h2>
-          <p className="text-sm text-white/35 mb-8">Enter your 4-digit PIN</p>
+          <h2 className="text-xl font-bold text-slate-900 mb-1" style={{ fontFamily: 'Playfair Display, serif' }}>Admin Login</h2>
+          <p className="text-sm text-slate-500 mb-8">Enter your 4-digit PIN</p>
 
           {/* Dots */}
           <div className={`flex justify-center gap-4 mb-8 ${shake ? 'anim-shake' : ''}`}>
@@ -55,9 +55,9 @@ export function Login() {
                 className={`w-3 h-3 rounded-full border-2 transition-all duration-150 ${
                   i < pin.length
                     ? error
-                      ? 'bg-red-500 border-red-500'
-                      : 'bg-amber-400 border-amber-400'
-                    : 'border-white/20 bg-transparent'
+                      ? 'bg-red-400 border-red-400'
+                      : 'bg-amber-500 border-amber-500'
+                    : 'border-slate-300 bg-transparent'
                 }`}
               />
             ))}
@@ -73,8 +73,8 @@ export function Login() {
                   onClick={() => press(k === 'del' ? 'del' : Number(k))}
                   className={`w-full aspect-square rounded-2xl text-base font-bold transition-all duration-100 active:scale-90 ${
                     k === 'del'
-                      ? 'bg-white/5 text-white/40 hover:bg-white/10 hover:text-white'
-                      : 'bg-white/8 text-white hover:bg-white/15 border border-white/8'
+                      ? 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-900'
+                      : 'bg-slate-50 text-slate-800 hover:bg-slate-100 border border-slate-200'
                   }`}
                 >
                   {k === 'del' ? '⌫' : k}
@@ -84,11 +84,11 @@ export function Login() {
           </div>
 
           {error && (
-            <p className="text-xs text-red-400 font-medium">Incorrect PIN. Please try again.</p>
+            <p className="text-xs text-red-500 font-medium">Incorrect PIN. Please try again.</p>
           )}
         </div>
 
-        <p className="text-center text-xs text-white/15 mt-4">Furco Inventory Management System</p>
+        <p className="text-center text-xs text-slate-400 mt-4">Furco Inventory Management System</p>
       </div>
     </div>
   )

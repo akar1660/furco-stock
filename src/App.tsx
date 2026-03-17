@@ -10,14 +10,14 @@ import { Toast } from './components/ui/Toast'
 
 function LoadingScreen() {
   return (
-    <div className="fixed inset-0 bg-zinc-950 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-slate-50 flex items-center justify-center z-50">
       <div className="text-center">
-        <img src="/furco-logo.png" alt="Furco" className="h-12 w-auto mx-auto mb-6 opacity-80" />
+        <img src="/furco-logo.png" alt="Furco" className="h-12 w-auto mx-auto mb-6 opacity-70" />
         <div className="flex gap-1.5 justify-center">
           {[0,1,2].map(i => (
             <div
               key={i}
-              className="w-1.5 h-1.5 rounded-full bg-amber-400 anim-pulse"
+              className="w-1.5 h-1.5 rounded-full bg-amber-500 anim-pulse"
               style={{ animationDelay: `${i * 0.2}s` }}
             />
           ))}
@@ -46,19 +46,19 @@ export default function App() {
   if (loading) return <LoadingScreen />
 
   return (
-    <div className="min-h-screen bg-zinc-950 flex">
+    <div className="min-h-screen bg-slate-50 flex">
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0">
-        <main className="flex-1 p-6 lg:p-8 max-w-6xl w-full">
+        <main className="flex-1 p-6 lg:p-8 w-full">
           <PageContent />
         </main>
-        <footer className="px-6 lg:px-8 py-4 border-t border-white/5 flex items-center justify-between">
-          <div className="text-xs text-white/15">
+        <footer className="px-6 lg:px-8 py-4 border-t border-slate-200 flex items-center justify-between bg-white">
+          <div className="text-xs text-slate-400 font-medium">
             © {new Date().getFullYear()} Furco Wholesale Furniture · Toronto, Canada
           </div>
           <div className="flex items-center gap-1.5">
             <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 anim-pulse" />
-            <span className="text-xs text-white/15">Live · Real-time Sync</span>
+            <span className="text-xs text-slate-400">Live · Real-time Sync</span>
           </div>
         </footer>
       </div>
