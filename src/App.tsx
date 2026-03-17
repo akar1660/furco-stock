@@ -49,10 +49,10 @@ export default function App() {
     <div className="min-h-screen bg-slate-50 flex">
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0">
-        <main className="flex-1 p-6 lg:p-8 w-full">
+        <main className="flex-1 p-4 lg:p-8 pb-24 lg:pb-8 w-full">
           <PageContent />
         </main>
-        <footer className="px-6 lg:px-8 py-4 border-t border-slate-200 flex items-center justify-between bg-white">
+        <footer className="hidden lg:flex px-8 py-4 border-t border-slate-200 items-center justify-between bg-white">
           <div className="text-xs text-slate-400 font-medium">
             © {new Date().getFullYear()} Furco Wholesale Furniture · Toronto, Canada
           </div>

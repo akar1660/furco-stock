@@ -1,39 +1,32 @@
-import { LayoutDashboard, Package, Ship, History, LogOut, LogIn, X, Menu } from 'lucide-react'
-import { useState } from 'react'
+import { LayoutDashboard, Package, Ship, History, LogOut, LogIn } from 'lucide-react'
 import { useStore } from '../../store/useStore'
 import type { Page } from '../../types'
 
-const ADMIN_ITEMS = [
-  { id: 'dashboard' as Page, label: 'Overview',    icon: LayoutDashboard },
-  { id: 'list'      as Page, label: 'Stock List',  icon: Package },
-  { id: 'containers'as Page, label: 'Containers',  icon: Ship },
-  { id: 'history'   as Page, label: 'Activity Log',icon: History },
+const ADMIN_NAV = [
+  { id: 'dashboard' as Page, label: 'Overview',   icon: LayoutDashboard },
+  { id: 'list'      as Page, label: 'Stock',      icon: Package },
+  { id: 'containers'as Page, label: 'Containers', icon: Ship },
+  { id: 'history'   as Page, label: 'Log',        icon: History },
 ]
 
-const PUBLIC_ITEMS = [
-  { id: 'list' as Page, label: 'Product Catalogue', icon: Package },
+const PUBLIC_NAV = [
+  { id: 'list' as Page, label: 'Products', icon: Package },
 ]
 
 export function Sidebar() {
   const { page, setPage, isAdmin, setAdmin, showToast } = useStore()
-  const [mobileOpen, setMobileOpen] = useState(false)
 
-  const items = isAdmin ? ADMIN_ITEMS : PUBLIC_ITEMS
+  const navItems = isAdmin ? ADMIN_NAV : PUBLIC_NAV
 
-  const navigate = (id: Page) => {
-    if (id === 'list' && !isAdmin) setPage('list')
-    else setPage(id)
-    setMobileOpen(false)
-  }
+  const navigate = (id: Page) => setPage(id)
 
   const logout = () => {
     setAdmin(false)
     setPage('list')
     showToast('Logged out', 'warn')
-    setMobileOpen(false)
   }
 
-  const NavItem = ({ item }: { item: typeof ADMIN_ITEMS[0] }) => {
+  const NavItem = ({ item }: { item: typeof ADMIN_NAV[0] }) => {
     const active = page === item.id
     return (
       <button
@@ -76,7 +69,7 @@ export function Sidebar() {
 
       {/* Nav */}
       <nav className="flex-1 px-4 py-4 space-y-1">
-        {items.map(item => <NavItem key={item.id} item={item} />)}
+        {navItems.map(item => <NavItem key={item.id} item={item} />)}
       </nav>
 
       {/* Bottom */}
@@ -91,7 +84,7 @@ export function Sidebar() {
           </button>
         ) : (
           <button
-            onClick={() => { setPage('login'); setMobileOpen(false) }}
+            onClick={() => setPage('login')}
             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-all group"
           >
             <LogIn size={16} className="text-slate-400 group-hover:text-slate-600" />
@@ -105,6 +98,51 @@ export function Sidebar() {
     </div>
   )
 
+  /* ── Mobile bottom tab bar ── */
+  const MobileBottomNav = () => {
+    const allTabs = isAdmin
+      ? [...ADMIN_NAV, { id: 'logout' as Page, label: 'Logout', icon: LogOut }]
+      : [...PUBLIC_NAV, { id: 'login' as Page, label: 'Login', icon: LogIn }]
+
+    return (
+      <nav
+        className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200"
+        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+      >
+        <div className="flex items-stretch">
+          {allTabs.map(tab => {
+            const isLogout = tab.id === 'logout'
+            const active = !isLogout && page === tab.id
+            return (
+              <button
+                key={tab.id}
+                onClick={() => {
+                  if (isLogout) { logout() }
+                  else navigate(tab.id)
+                }}
+                className={`flex-1 flex flex-col items-center justify-center gap-1 py-2.5 text-[10px] font-semibold transition-all ${
+                  isLogout
+                    ? 'text-red-400 active:bg-red-50'
+                    : active
+                    ? 'text-amber-600'
+                    : 'text-slate-400 active:bg-slate-50'
+                }`}
+              >
+                <tab.icon
+                  size={20}
+                  className={active ? 'text-amber-600' : isLogout ? 'text-red-400' : 'text-slate-400'}
+                  strokeWidth={active ? 2.5 : 1.8}
+                />
+                <span>{tab.label}</span>
+                {active && <div className="absolute top-0 w-8 h-0.5 bg-amber-500 rounded-full" />}
+              </button>
+            )
+          })}
+        </div>
+      </nav>
+    )
+  }
+
   return (
     <>
       {/* Desktop sidebar */}
@@ -112,30 +150,22 @@ export function Sidebar() {
         <SidebarContent />
       </aside>
 
-      {/* Mobile top bar */}
-      <div className="lg:hidden flex items-center justify-between px-4 h-14 bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
-        <img src="/furco-logo.png" alt="Furco" className="h-7 w-auto" />
-        <div className="flex items-center gap-2">
-          {isAdmin && <span className="text-xs font-bold text-amber-700 bg-amber-50 px-2 py-1 rounded-full ring-1 ring-amber-200">ADMIN</span>}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="w-9 h-9 flex items-center justify-center rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-all"
-          >
-            {mobileOpen ? <X size={18} /> : <Menu size={18} />}
-          </button>
+      {/* Mobile: slim top bar (logo + admin badge only) */}
+      <div className="lg:hidden flex items-center justify-between px-4 h-13 bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm" style={{ height: '52px' }}>
+        <div className="flex items-center gap-2.5">
+          <img src="/furco-logo.png" alt="Furco" className="h-6 w-auto" />
+          <div className="w-px h-4 bg-slate-200" />
+          <span className="text-xs text-slate-400 font-medium">Furco Wholesale</span>
         </div>
+        {isAdmin && (
+          <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-full ring-1 ring-amber-200 uppercase tracking-wide">
+            Admin
+          </span>
+        )}
       </div>
 
-      {/* Mobile drawer */}
-      {mobileOpen && (
-        <div className="lg:hidden fixed inset-0 z-30 anim-over" style={{ background: 'rgba(15,23,42,0.4)', backdropFilter: 'blur(4px)' }} onClick={() => setMobileOpen(false)}>
-          <div className="w-72 h-full bg-white border-r border-slate-200 anim-up shadow-xl" onClick={e => e.stopPropagation()}>
-            <div className="pt-14 h-full">
-              <SidebarContent />
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Mobile: bottom nav bar */}
+      <MobileBottomNav />
     </>
   )
 }
